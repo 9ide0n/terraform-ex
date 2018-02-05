@@ -7,11 +7,8 @@ resource "aws_launch_configuration" "example" {
     image_id = "ami-41e0b93b"
     instance_type = "t2.micro"
     security_groups = ["${aws_security_group.instance.id}"]
-    user_data = <<-EOF
-            #!/bin/bash
-            echo "Hello, World" > index.html
-            nohup busybox httpd -f -p "${var.server_port}" &
-            EOF
+    # use output of the template_file data sourcre defined in data_sources.tf (rendered with vars user-data.sh)
+    user_data = "${data.template_file.user_data.rendered}" 
     # we must sure that instance created by launch_configuration will be successfully created, only then the old-one will be destroyed
     # this attribute should be set to all linked primitives in our case aws_security_group
     lifecycle {
@@ -19,8 +16,6 @@ resource "aws_launch_configuration" "example" {
     }
 }
 
-# fetch aws_availability_zones datasource from AWS API 
-data "aws_availability_zones" "all" {}
 
 
 resource "aws_autoscaling_group" "example" {
