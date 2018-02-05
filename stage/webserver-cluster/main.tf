@@ -2,16 +2,6 @@ provider "aws" {
     region = "us-east-1"
 }
 
-variable "server_port"{
-    description = "Port for HTTP requests" 
-    default = 8080
-}
-
-
-output "elb_dns_name"{
-    value = "${aws_elb.example.dns_name}"   
-}
-
 # instead of instance we use launch_configuration for asg with same params as instance
 resource "aws_launch_configuration" "example" {
     image_id = "ami-41e0b93b"
