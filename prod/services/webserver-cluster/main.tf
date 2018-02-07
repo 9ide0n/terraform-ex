@@ -4,7 +4,8 @@ provider "aws" {
 
 module "webserver_cluster" {
     # source = "../../../../terraform-modules/services/webserver-cluster"
-    source = "git::git@github.com:9ide0n/terraform-modules.git//services/webserver-cluster?ref=enable_new_user_data"
+    # source = "git::git@github.com:9ide0n/terraform-modules.git//services/webserver-cluster?ref=enable_new_user_data"
+    source = "git::git@github.com:9ide0n/terraform-modules.git//services/webserver-cluster?ref=v0.3.0"
     cluster_name = "webservers-prod"
     db_remote_state_bucket = "9ide0n-s3-terraform-state"
     db_remote_state_key = "prod/data-stores/mysql/terraform.tfstate"
@@ -12,6 +13,8 @@ module "webserver_cluster" {
     min_size = 2
     max_size = 10
     enable_autoscaling=true
-    enable_new_user_data = true
+    # enable_new_user_data = true
+    ami= "ami-40d28157"
+    server_text = "New server text"
 }
 
