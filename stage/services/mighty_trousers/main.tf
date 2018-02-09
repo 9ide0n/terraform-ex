@@ -15,9 +15,9 @@ module "mighty_trousers" {
   subnets             = ["${data.terraform_remote_state.vps.public-subnet-1-id}", "${data.terraform_remote_state.vps.public-subnet-2-id}"]
   name                = "mighty_trousers"
   environment         = "${var.environment}"
-  ami                 = "ami-41e0b93b"
+  # ami                 = "ami-41e0b93b"
   enable_ssh          = true
-  extra_packages      = "wget apache2"
+  extra_packages      = "wget"
   external_nameserver = "8.8.8.8"
   keypair             = "${aws_key_pair.mighty_trousers.key_name}"
   instance_count      = 2
