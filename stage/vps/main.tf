@@ -6,10 +6,26 @@ resource "aws_vpc" "my_vpc" {
   cidr_block = "10.0.0.0/16"
 }
 
-resource "aws_subnet" "public" {
+# resource "aws_subnet" "public" {
+#   vpc_id                  = "${aws_vpc.my_vpc.id}"
+#   cidr_block              = "10.0.1.0/24"
+#   # allow instanses to reseive public ip automatically
+#   map_public_ip_on_launch = true
+# }
+data "aws_availability_zones" "all" {}
+
+resource "aws_subnet" "public-1" {
+
   vpc_id                  = "${aws_vpc.my_vpc.id}"
-  cidr_block              = "10.0.1.0/24"
-  # allow instanses to reseive public ip automatically
+  availability_zone       = "${data.aws_availability_zones.all.names[0]}"
+  cidr_block              = "${lookup(var.subnet_cidrs, "public-0")}"
+  map_public_ip_on_launch = true
+}
+
+resource "aws_subnet" "public-2" {
+  vpc_id                  = "${aws_vpc.my_vpc.id}"
+  availability_zone       = "${data.aws_availability_zones.all.names[1]}"
+  cidr_block              = "${lookup(var.subnet_cidrs, "public-1")}"
   map_public_ip_on_launch = true
 }
 

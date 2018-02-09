@@ -10,15 +10,15 @@ resource "aws_key_pair" "mighty_trousers" {
 }
 
 module "mighty_trousers" {
-  source              = "../../../../terraform-modules/services/application"
+  source              = "../../../../terraform-applicaton/"
   vpc_id              = "${data.terraform_remote_state.vps.vpc_id}"
-  subnet_id           = "${data.terraform_remote_state.vps.vpc_public_subnet_id}"
+  subnets             = ["${data.terraform_remote_state.vps.public-subnet-1-id}", "${data.terraform_remote_state.vps.public-subnet-2-id}"]
   name                = "mighty_trousers"
   environment         = "${var.environment}"
   ami                 = "ami-41e0b93b"
   enable_ssh          = true
-  extra_packages      = "wget"
+  extra_packages      = "wget apache2"
   external_nameserver = "8.8.8.8"
   keypair             = "${aws_key_pair.mighty_trousers.key_name}"
+  instance_count      = 2
 }
-
